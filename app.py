@@ -1,6 +1,3 @@
-+699++97"""
-app.py — Climate Radar dashboard.
-"""
 
 from __future__ import annotations
 
