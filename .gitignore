@@ -1,0 +1,23 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+.venv
+env/
+venv/
+*.egg-info/
+
+# Data (large files)
+data/raw/*.csv
+data/processed/*.csv
+
+# Model checkpoints (large binaries)
+models/*.pt
+models/*.pkl
+models/*.json
+!models/metrics.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
