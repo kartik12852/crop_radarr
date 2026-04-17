@@ -3,6 +3,8 @@ synthetic/synthetic_data_generator.py
 Generates realistic synthetic climate + soil data for 30 Indian zones.
 Used as offline fallback when API fetch fails.
 Run: python synthetic/synthetic_data_generator.py
+
+FIX: Zones now have climate-realistic risk labels instead of equal distribution.
 """
 
 from __future__ import annotations
@@ -53,6 +55,41 @@ ZONES = [
     (29, "Punjab Mustard Zone",     31.5, 74.3, "Mustard"),
 ]
 
+# ── Realistic risk assignments based on actual Indian agricultural geography ──
+# 0=Safe, 1=Drought, 2=Heat Stress, 3=Flood, 4=Soil Risk
+ZONE_RISK_MAP = {
+    0:  0,   # Punjab Wheat Belt       → Safe (good irrigation, fertile)
+    1:  2,   # Haryana Rice Zone       → Heat Stress (hot summers)
+    2:  3,   # UP Sugarcane Belt       → Flood (Ganga basin)
+    3:  3,   # Bihar Maize Zone        → Flood (frequently flooded)
+    4:  3,   # WB Jute Region          → Flood (deltaic, waterlogged)
+    5:  3,   # Odisha Rice Delta       → Flood (cyclone + deltaic floods)
+    6:  1,   # AP Cotton Zone          → Drought (rain-shadow region)
+    7:  0,   # TN Paddy Region         → Safe (canal irrigation)
+    8:  0,   # Karnataka Coffee Zone   → Safe (good rainfall, cool)
+    9:  3,   # Kerala Coconut Region   → Flood (heavy monsoon)
+    10: 1,   # Maharashtra Soybean     → Drought (Vidarbha drought belt)
+    11: 1,   # Gujarat Groundnut       → Drought (semi-arid)
+    12: 1,   # Rajasthan Millet Zone   → Drought (Thar desert fringe)
+    13: 0,   # MP Soybean Belt         → Safe (moderate rainfall)
+    14: 0,   # Chhattisgarh Rice       → Safe (good rainfall)
+    15: 4,   # Jharkhand Maize         → Soil Risk (laterite soils)
+    16: 3,   # Assam Tea Garden        → Flood (Brahmaputra flooding)
+    17: 0,   # Nagaland Horticulture   → Safe (terrace farming)
+    18: 0,   # Manipur Vegetables      → Safe (valley farming)
+    19: 3,   # Meghalaya Potatoes      → Flood (highest rainfall globally)
+    20: 0,   # Himachal Apple Zone     → Safe (cool, irrigated)
+    21: 2,   # Uttarakhand Wheat       → Heat Stress (valley heat)
+    22: 0,   # J&K Saffron Zone        → Safe (cool plateau)
+    23: 2,   # Telangana Cotton        → Heat Stress (very hot dry summer)
+    24: 0,   # Goa Cashew Region       → Safe (coastal moderate)
+    25: 4,   # Sikkim Cardamom         → Soil Risk (steep slopes, erosion)
+    26: 4,   # Arunachal Ginger        → Soil Risk (high slope erosion)
+    27: 0,   # Tripura Pineapple       → Safe (moderate hills)
+    28: 2,   # Mizoram Turmeric        → Heat Stress (valley heat)
+    29: 1,   # Punjab Mustard Zone     → Drought (rabi, low water)
+}
+
 CROP_INFO = {
     "Wheat":       {"water_need_mm": 450,  "heat_tolerance_c": 32, "drought_tolerance": 0.6},
     "Rice":        {"water_need_mm": 1200, "heat_tolerance_c": 35, "drought_tolerance": 0.3},
@@ -66,7 +103,7 @@ CROP_INFO = {
     "Coffee":      {"water_need_mm": 1600, "heat_tolerance_c": 30, "drought_tolerance": 0.3},
     "Coconut":     {"water_need_mm": 1800, "heat_tolerance_c": 38, "drought_tolerance": 0.4},
     "Tea":         {"water_need_mm": 1500, "heat_tolerance_c": 32, "drought_tolerance": 0.3},
-    "Horticulture": {"water_need_mm": 800, "heat_tolerance_c": 35, "drought_tolerance": 0.5},
+    "Horticulture":{"water_need_mm": 800,  "heat_tolerance_c": 35, "drought_tolerance": 0.5},
     "Vegetables":  {"water_need_mm": 700,  "heat_tolerance_c": 33, "drought_tolerance": 0.4},
     "Potato":      {"water_need_mm": 500,  "heat_tolerance_c": 28, "drought_tolerance": 0.4},
     "Apple":       {"water_need_mm": 1200, "heat_tolerance_c": 30, "drought_tolerance": 0.4},
@@ -79,72 +116,73 @@ CROP_INFO = {
     "Mustard":     {"water_need_mm": 350,  "heat_tolerance_c": 30, "drought_tolerance": 0.6},
 }
 
-RISK_SCENARIOS = [
-    ("Safe",    1.0,  0.0,  0.0,  0.0),
-    ("Drought", 0.3, +1.5, -0.15, 0.1),
-    ("Heat",    0.7, +6.0,  0.0,  0.0),
-    ("Flood",   3.5,  0.0, +0.18, 0.0),
-    ("Soil",    0.9,  1.0, -0.05, 0.5),
-]
+# scenario_idx → (precip_multiplier, temp_delta, soil_moisture_delta, soil_stress_delta)
+RISK_SCENARIOS = {
+    0: (1.0,  0.0,  0.0,   0.0),    # Safe
+    1: (0.3, +1.5, -0.15,  0.1),    # Drought
+    2: (0.7, +6.0,  0.0,   0.0),    # Heat Stress
+    3: (3.5,  0.0, +0.18,  0.0),    # Flood
+    4: (0.9,  1.0, -0.05,  0.5),    # Soil Risk
+}
 
 
 def generate_zone_record(zone_id, zone_name, lat, lon, crop, scenario_idx):
     cd = CROP_INFO.get(crop, CROP_INFO["Wheat"])
     sc = RISK_SCENARIOS[scenario_idx]
-    base_temp = 20 + 0.1 * (lat - 10) * (-1) + np.random.normal(0, 2)
+    base_temp   = 20 + 0.1 * (lat - 10) * (-1) + np.random.normal(0, 2)
     base_precip = 300 + cd["water_need_mm"] * 0.3 + np.random.normal(0, 50)
-    temp_max = base_temp + 8 + sc[2] + np.random.normal(0, 1.5)
-    temp_min = base_temp - 4 + np.random.normal(0, 1)
-    temp_avg = (temp_max + temp_min) / 2
-    precip_total = max(5, base_precip * sc[1] + np.random.normal(0, 30))
-    precip_avg = precip_total / 90
-    et0_mean = 2.5 + 0.05 * temp_avg + np.random.normal(0, 0.3)
-    soil_moisture = np.clip(0.28 + sc[3] + np.random.normal(0, 0.05), 0.05, 0.55)
-    windspeed = np.random.uniform(5, 20)
-    soil_phh2o = np.clip(6.5 + np.random.normal(0, 0.5), 5.0, 8.5)
-    soil_clay = np.clip(25 + np.random.normal(0, 8), 5, 60)
-    soil_soc = np.clip(12 + np.random.normal(0, 4) - sc[4] * 5, 2, 35)
-    soil_bdod = np.clip(1.3 + sc[4] * 0.2 + np.random.normal(0, 0.1), 0.9, 1.9)
-    soil_sand = np.clip(100 - soil_clay + np.random.normal(0, 5), 10, 80)
-    soil_silt = np.clip(100 - soil_clay - soil_sand, 5, 50)
-    rh = soil_moisture * 100
-    heat_index = (
+    temp_max    = base_temp + 8 + sc[1] + np.random.normal(0, 1.5)
+    temp_min    = base_temp - 4 + np.random.normal(0, 1)
+    temp_avg    = (temp_max + temp_min) / 2
+    precip_total= max(5, base_precip * sc[0] + np.random.normal(0, 30))
+    precip_avg  = precip_total / 90
+    et0_mean    = 2.5 + 0.05 * temp_avg + np.random.normal(0, 0.3)
+    soil_moisture = np.clip(0.28 + sc[2] + np.random.normal(0, 0.05), 0.05, 0.55)
+    windspeed   = np.random.uniform(5, 20)
+    soil_phh2o  = np.clip(6.5 + np.random.normal(0, 0.5), 5.0, 8.5)
+    soil_clay   = np.clip(25 + np.random.normal(0, 8), 5, 60)
+    soil_soc    = np.clip(12 + np.random.normal(0, 4) - sc[3] * 5, 2, 35)
+    soil_bdod   = np.clip(1.3 + sc[3] * 0.2 + np.random.normal(0, 0.1), 0.9, 1.9)
+    soil_sand   = np.clip(100 - soil_clay + np.random.normal(0, 5), 10, 80)
+    soil_silt   = np.clip(100 - soil_clay - soil_sand, 5, 50)
+    rh          = soil_moisture * 100
+    heat_index  = (
         -8.78469 + 1.61139411 * temp_avg + 2.338549 * rh
         - 0.14611605 * temp_avg * rh - 0.01230894 * temp_avg**2
         - 0.01642482 * rh**2 + 0.00221173 * temp_avg**2 * rh
         + 0.00072546 * temp_avg * rh**2 - 0.00000358 * temp_avg**2 * rh**2
     )
     temp_rain_ratio = temp_avg / (precip_avg + 1)
-    drought_index = (et0_mean * 90) / (precip_total + 1)
-    soil_stress = (soil_bdod / 1.3) - (soil_soc / 20)
+    drought_index   = (et0_mean * 90) / (precip_total + 1)
+    soil_stress     = (soil_bdod / 1.3) - (soil_soc / 20)
     return {
         "zone_id": zone_id,
         "zone_name": zone_name,
         "lat": lat,
         "lon": lon,
         "crop": crop,
-        "temp_max_mean": round(temp_max, 2),
-        "temp_min_mean": round(temp_min, 2),
-        "temp_avg": round(temp_avg, 2),
-        "precip_total_mm": round(precip_total, 1),
-        "precip_avg_mm": round(precip_avg, 3),
-        "windspeed_mean": round(windspeed, 1),
-        "et0_mean": round(et0_mean, 3),
+        "temp_max_mean":      round(temp_max, 2),
+        "temp_min_mean":      round(temp_min, 2),
+        "temp_avg":           round(temp_avg, 2),
+        "precip_total_mm":    round(precip_total, 1),
+        "precip_avg_mm":      round(precip_avg, 3),
+        "windspeed_mean":     round(windspeed, 1),
+        "et0_mean":           round(et0_mean, 3),
         "soil_moisture_mean": round(soil_moisture, 4),
-        "soil_phh2o": round(soil_phh2o, 2),
-        "soil_clay": round(soil_clay, 1),
-        "soil_soc": round(soil_soc, 2),
-        "soil_bdod": round(soil_bdod, 3),
-        "soil_sand": round(soil_sand, 1),
-        "soil_silt": round(soil_silt, 1),
-        "heat_index": round(heat_index, 2),
-        "temp_rain_ratio": round(temp_rain_ratio, 3),
-        "drought_index": round(drought_index, 3),
-        "soil_stress": round(soil_stress, 4),
-        "water_need_mm": cd["water_need_mm"],
-        "heat_tolerance_c": cd["heat_tolerance_c"],
-        "drought_tolerance": cd["drought_tolerance"],
-        "risk_label": int(scenario_idx),
+        "soil_phh2o":         round(soil_phh2o, 2),
+        "soil_clay":          round(soil_clay, 1),
+        "soil_soc":           round(soil_soc, 2),
+        "soil_bdod":          round(soil_bdod, 3),
+        "soil_sand":          round(soil_sand, 1),
+        "soil_silt":          round(soil_silt, 1),
+        "heat_index":         round(heat_index, 2),
+        "temp_rain_ratio":    round(temp_rain_ratio, 3),
+        "drought_index":      round(drought_index, 3),
+        "soil_stress":        round(soil_stress, 4),
+        "water_need_mm":      cd["water_need_mm"],
+        "heat_tolerance_c":   cd["heat_tolerance_c"],
+        "drought_tolerance":  cd["drought_tolerance"],
+        "risk_label":         int(scenario_idx),
     }
 
 
@@ -155,8 +193,14 @@ def main(n_samples_per_zone: int = 10):
     records = []
     for zone in ZONES:
         zone_id, zone_name, lat, lon, crop = zone
-        dominant = zone_id % 5
-        risks = [dominant] * 6 + np.random.choice(5, size=max(0, n_samples_per_zone - 6), p=[0.25, 0.25, 0.2, 0.15, 0.15]).tolist()
+        # Use realistic geographic risk as dominant label
+        dominant = ZONE_RISK_MAP[zone_id]
+        # Dominant label gets majority of samples; minority noise from other classes
+        noise_classes = [c for c in range(5) if c != dominant]
+        noise_counts  = max(0, n_samples_per_zone - 7)
+        noise_labels  = np.random.choice(noise_classes, size=noise_counts).tolist() if noise_counts > 0 else []
+        risks = [dominant] * 7 + noise_labels
+        np.random.shuffle(risks)
         for r in risks:
             records.append(generate_zone_record(zone_id, zone_name, lat, lon, crop, int(r)))
 
@@ -170,18 +214,21 @@ def main(n_samples_per_zone: int = 10):
         m = series.mode(dropna=True)
         return int(m.iloc[0]) if not m.empty else int(series.iloc[0])
 
-    num_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+    num_cols  = df.select_dtypes(include=[np.number]).columns.tolist()
     num_no_id = [c for c in num_cols if c not in {"zone_id", "risk_label"}]
     agg = df.groupby("zone_id")[num_no_id].mean().reset_index()
-    agg["zone_name"] = agg["zone_id"].map(df.groupby("zone_id")["zone_name"].first())
-    agg["crop"] = agg["zone_id"].map(df.groupby("zone_id")["crop"].first())
-    agg["lat"] = agg["zone_id"].map(df.groupby("zone_id")["lat"].first())
-    agg["lon"] = agg["zone_id"].map(df.groupby("zone_id")["lon"].first())
-    agg["risk_label"] = df.groupby("zone_id")["risk_label"].agg(_mode).values
+    for col in ["zone_name", "crop", "lat", "lon"]:
+        agg[col] = agg["zone_id"].map(df.groupby("zone_id")[col].first())
+    agg["risk_label"] = [ZONE_RISK_MAP[int(zid)] for zid in agg["zone_id"]]
+
     PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
     agg.to_csv(MERGED_CSV, index=False)
     print(f"✓ Aggregated per-zone copy -> {MERGED_CSV}")
-    print(f"  Zone risk distribution:\n{agg['risk_label'].value_counts().sort_index().to_string()}")
+    print(f"  Zone risk distribution:")
+    dist = agg["risk_label"].value_counts().sort_index()
+    names = {0: "Safe", 1: "Drought", 2: "Heat Stress", 3: "Flood", 4: "Soil Risk"}
+    for label, count in dist.items():
+        print(f"    {names.get(int(label), label)}: {count} zones")
     print("\nDone! Next: python train_model.py")
 
 

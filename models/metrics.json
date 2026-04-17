@@ -4,6 +4,8 @@
   "recall": 1.0,
   "f1_score": 1.0,
   "roc_auc": 1.0,
-  "model_family": "Graph-aware RandomForest",
-  "runtime": "Pure Python + scikit-learn (no torch)"
+  "model_family": "Graph-aware RandomForest (GCN-inspired)",
+  "runtime": "Pure scikit-learn \u2014 no PyTorch dependency",
+  "n_zones": 30,
+  "n_features": 18
 }
