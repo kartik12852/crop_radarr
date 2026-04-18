@@ -110,3 +110,38 @@ Traceback (most recent call last):
     raise ValueError(
 ValueError: The least populated class in y has only 1 member, which is too few. The minimum number of groups for any class cannot be less than 2.
 
+2026-04-18 12:45:43,676 [AutoUpdater] INFO Starting data fetch pipeline
+2026-04-18 12:46:12,632 [AutoUpdater] INFO AutoUpdater started — interval 2.0h, immediate=False
+2026-04-18 12:46:32,187 [AutoUpdater] INFO Weather saved → D:\crop.radar\crop_radarr\data\raw\weather_data.csv
+2026-04-18 12:46:32,187 [AutoUpdater] INFO Reusing cached soil data
+2026-04-18 12:46:32,282 [AutoUpdater] INFO Merged data saved → D:\crop.radar\crop_radarr\data\processed\merged_zones.csv | 30 zones
+2026-04-18 12:46:32,282 [AutoUpdater] INFO Risk distribution:
+risk_label
+1    14
+0    10
+3     5
+4     1
+2026-04-18 12:46:42,353 [AutoUpdater] INFO Model retrained successfully
+2026-04-18 12:47:20,129 [AutoUpdater] INFO Starting data fetch pipeline
+2026-04-18 12:47:24,055 [AutoUpdater] INFO Starting data fetch pipeline
+2026-04-18 12:48:13,603 [AutoUpdater] INFO Weather saved → D:\crop.radar\crop_radarr\data\raw\weather_data.csv
+2026-04-18 12:48:13,605 [AutoUpdater] INFO Weather saved → D:\crop.radar\crop_radarr\data\raw\weather_data.csv
+2026-04-18 12:48:13,605 [AutoUpdater] INFO Reusing cached soil data
+2026-04-18 12:48:13,605 [AutoUpdater] INFO Reusing cached soil data
+2026-04-18 12:48:13,659 [AutoUpdater] INFO Merged data saved → D:\crop.radar\crop_radarr\data\processed\merged_zones.csv | 30 zones
+2026-04-18 12:48:13,659 [AutoUpdater] INFO Risk distribution:
+risk_label
+1    14
+0    10
+3     5
+4     1
+2026-04-18 12:48:13,663 [AutoUpdater] INFO Merged data saved → D:\crop.radar\crop_radarr\data\processed\merged_zones.csv | 30 zones
+2026-04-18 12:48:13,663 [AutoUpdater] INFO Risk distribution:
+risk_label
+1    14
+0    10
+3     5
+4     1
+2026-04-18 12:48:20,420 [AutoUpdater] INFO Model retrained successfully
+2026-04-18 12:48:20,537 [AutoUpdater] INFO Model retrained successfully
+2026-04-18 12:48:38,837 [AutoUpdater] INFO AutoUpdater started — interval 2.0h, immediate=False

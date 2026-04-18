@@ -40,19 +40,28 @@ class RiskTrainer:
 
     def _choose_eval_strategy(self, n: int, y: np.ndarray):
         """
-        Choose evaluation strategy based on dataset size.
-        - n < 60  → 5-fold cross-validation (too few samples for a clean split)
-        - n >= 60 → 75/25 stratified train/val split
+        Choose evaluation strategy based on dataset size and class distribution.
+        If any class has only 1 sample, CV folds are limited to 2
+        and stratification is skipped (safe fallback).
         Returns: ("cv", n_folds) or ("split", None)
         """
         classes, counts = np.unique(y, return_counts=True)
-        min_count = counts.min()
-        # Need at least 2 samples per class per fold
+        min_count = int(counts.min())
         if n < 60 or min_count < 10:
-            n_folds = min(5, int(min_count))
-            n_folds = max(2, n_folds)
+            # Cap folds so each fold has ≥1 sample from the rarest class
+            n_folds = max(2, min(5, min_count))
             return "cv", n_folds
         return "split", None
+
+    @staticmethod
+    def _safe_stratify(y: np.ndarray, min_per_class: int = 2):
+        """
+        Return y for stratify= only when every class has ≥ min_per_class members.
+        Returns None (no stratification) when any class is too rare,
+        avoiding sklearn's ValueError.
+        """
+        _, counts = np.unique(y, return_counts=True)
+        return y if int(counts.min()) >= min_per_class else None
 
     def train(
         self,
@@ -97,8 +106,20 @@ class RiskTrainer:
             X_aug_full  = GraphRiskModel.augment_features(X, adj_norm)
             cv_preds_all= np.zeros(n, dtype=int)
             cv_probs_all= np.zeros((n, 5), dtype=float)
-            skf = StratifiedKFold(n_splits=n_folds, shuffle=True, random_state=self.random_state)
-            for fold_train_idx, fold_val_idx in skf.split(X_aug_full, y):
+            # Use StratifiedKFold only when all classes have ≥ n_folds members
+            _, counts = np.unique(y, return_counts=True)
+            use_stratified = int(counts.min()) >= n_folds
+            if use_stratified:
+                from sklearn.model_selection import StratifiedKFold
+                kf = StratifiedKFold(n_splits=n_folds, shuffle=True, random_state=self.random_state)
+                splits = list(kf.split(X_aug_full, y))
+            else:
+                from sklearn.model_selection import KFold
+                kf = KFold(n_splits=n_folds, shuffle=True, random_state=self.random_state)
+                splits = list(kf.split(X_aug_full))
+                print(f"  ⚠ Rare classes detected — using non-stratified {n_folds}-fold CV")
+
+            for fold_train_idx, fold_val_idx in splits:
                 tmp = GraphRiskModel(random_state=self.random_state)
                 tmp.fit(
                     X[fold_train_idx], y[fold_train_idx],
@@ -114,7 +135,9 @@ class RiskTrainer:
             probs_for_eval= cv_probs_all
             # For history, use a 80/20 proxy split (just for learning curve)
             idx_sp_train, idx_val = train_test_split(
-                np.arange(n), test_size=0.20, stratify=y, random_state=self.random_state
+                np.arange(n), test_size=0.20,
+                stratify=self._safe_stratify(y),   # None if any class has 1 member
+                random_state=self.random_state
             )
             idx_train     = idx_sp_train
             X_train_aug   = GraphRiskModel.augment_features(X[idx_train], adj_norm[np.ix_(idx_train, idx_train)])

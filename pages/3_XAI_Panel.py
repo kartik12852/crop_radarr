@@ -83,14 +83,13 @@ with col_info:
 with st.expander("📊 Class probability breakdown for this zone", expanded=False):
     prob_data = {
         "Risk Class": [f"{RISK_EMOJIS.get(i,'?')} {LABEL_NAMES.get(i, i)}" for i in range(5)],
-        "Probability": [f"{float(probs[zone_idx, i]) * 100:.1f}%" for i in range(5)],
-        "Bar": [float(probs[zone_idx, i]) for i in range(5)],
+        "Probability %": [round(float(probs[zone_idx, i]) * 100, 1) for i in range(5)],  # numeric, not string
     }
     prob_df = pd.DataFrame(prob_data)
     st.dataframe(
-        prob_df[["Risk Class", "Probability"]].style.background_gradient(
-            subset=["Probability"], cmap="Greens"
-        ),
+        prob_df.style.background_gradient(
+            subset=["Probability %"], cmap="Greens"   # now works — column is float
+        ).format({"Probability %": "{:.1f}%"}),       # display with % sign
         use_container_width=True, hide_index=True,
     )
 

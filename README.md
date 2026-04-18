@@ -11,7 +11,7 @@ GNN-powered climate risk monitoring for **30 Indian agricultural zones** using a
 ### Step 1 — Clone and enter the project
 
 ```powershell
-git clone https://github.com/VibhorJain1974/crop_radar.git
+git clone https://github.com/kartik12852/crop_radarr.git
 cd crop_radar
 ```
 
