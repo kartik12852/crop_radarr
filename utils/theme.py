@@ -1,6 +1,6 @@
 """
 utils/theme.py
-Global Streamlit theme — dark agricultural-tech aesthetic.
+Global Streamlit theme — light agricultural-tech aesthetic.
 Inject once per page with inject_theme().
 """
 
@@ -9,19 +9,19 @@ import streamlit as st
 # ------------------------------------------------------------------
 # Design tokens
 # ------------------------------------------------------------------
-PRIMARY  = "#7CFFB2"
-ACCENT   = "#55D6BE"
-DEEP     = "#0F172A"
-CARD     = "rgba(15, 23, 42, 0.70)"
-TEXT     = "#E5F7EE"
-MUTED    = "#A7F3D0"
+PRIMARY  = "#059669"
+ACCENT   = "#0d9488"
+DEEP     = "#F0FDF4"
+CARD     = "rgba(255, 255, 255, 0.90)"
+TEXT     = "#1a2e1a"
+MUTED    = "#374151"
 
 RISK_COLORS = {
-    0: "#34D399",   # Safe — emerald green
-    1: "#F59E0B",   # Drought — amber
-    2: "#F97316",   # Heat Stress — orange
-    3: "#38BDF8",   # Flood — sky blue
-    4: "#A78BFA",   # Soil Risk — violet
+    0: "#059669",   # Safe — emerald green
+    1: "#D97706",   # Drought — amber
+    2: "#EA580C",   # Heat Stress — orange
+    3: "#0284C7",   # Flood — sky blue
+    4: "#7C3AED",   # Soil Risk — violet
 }
 
 CSS = f"""
@@ -29,19 +29,19 @@ CSS = f"""
 /* ── Global ──────────────────────────────────────────────── */
 .stApp {{
     background:
-        radial-gradient(circle at top left,  rgba(34,197,94,0.18),  transparent 26%),
-        radial-gradient(circle at top right, rgba(56,189,248,0.16), transparent 24%),
-        linear-gradient(180deg, #07111f 0%, #0b1220 48%, #07111f 100%);
+        radial-gradient(circle at top left,  rgba(16,185,129,0.10),  transparent 30%),
+        radial-gradient(circle at top right, rgba(56,189,248,0.08), transparent 30%),
+        linear-gradient(180deg, #f0fdf4 0%, #f8fafc 50%, #f0fdf4 100%);
     color: {TEXT};
 }}
 [data-testid="stAppViewContainer"] > .main {{ background: transparent; }}
 
 /* ── Sidebar ─────────────────────────────────────────────── */
 [data-testid="stSidebar"] {{
-    background: linear-gradient(180deg, #0b3b2e 0%, #0f5132 42%, #0b2136 100%);
-    border-right: 1px solid rgba(124,255,178,0.14);
+    background: linear-gradient(180deg, #ecfdf5 0%, #d1fae5 42%, #e0f2fe 100%);
+    border-right: 1px solid rgba(5,150,105,0.18);
 }}
-[data-testid="stSidebar"] * {{ color: #E8FFF1 !important; }}
+[data-testid="stSidebar"] * {{ color: #065f46 !important; }}
 
 /* ── Layout ──────────────────────────────────────────────── */
 .block-container {{
@@ -49,16 +49,16 @@ CSS = f"""
     padding-bottom: 2rem;
     max-width: 86rem;
 }}
-h1, h2, h3, h4 {{ color: #F8FFFB !important; letter-spacing: -0.02em; }}
+h1, h2, h3, h4 {{ color: #064e3b !important; letter-spacing: -0.02em; }}
 p, li, label, .stMarkdown, .stCaption {{ color: {TEXT}; }}
 
 /* ── Hero panel ──────────────────────────────────────────── */
 .hero-panel {{
     background: linear-gradient(135deg,
-        rgba(16,185,129,0.20), rgba(59,130,246,0.18));
-    border: 1px solid rgba(124,255,178,0.16);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.24);
-    backdrop-filter: blur(12px);
+        rgba(16,185,129,0.15), rgba(59,130,246,0.10));
+    border: 1px solid rgba(5,150,105,0.22);
+    box-shadow: 0 8px 24px rgba(5,150,105,0.10);
+    backdrop-filter: blur(8px);
     border-radius: 22px;
     padding: 1.2rem 1.3rem;
     margin-bottom: 1rem;
@@ -67,31 +67,31 @@ p, li, label, .stMarkdown, .stCaption {{ color: {TEXT}; }}
     display: inline-block;
     padding: 0.28rem 0.65rem;
     border-radius: 999px;
-    background: rgba(124,255,178,0.14);
-    color: #D1FAE5;
+    background: rgba(5,150,105,0.12);
+    color: #065f46;
     font-size: 0.84rem;
-    border: 1px solid rgba(124,255,178,0.16);
+    border: 1px solid rgba(5,150,105,0.20);
     margin-bottom: 0.7rem;
 }}
 
 /* ── Metric tiles ────────────────────────────────────────── */
 .metric-tile {{
     background: linear-gradient(180deg,
-        rgba(15,23,42,0.84), rgba(17,24,39,0.72));
-    border: 1px solid rgba(124,255,178,0.12);
+        rgba(255,255,255,0.95), rgba(240,253,244,0.90));
+    border: 1px solid rgba(5,150,105,0.18);
     border-radius: 18px;
     padding: 0.95rem 1rem;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+    box-shadow: 0 4px 16px rgba(5,150,105,0.08);
     text-align: center;
 }}
 .metric-label {{
-    color: #A7F3D0;
+    color: #374151;
     font-size: 0.82rem;
     opacity: 0.92;
     margin-bottom: 0.25rem;
 }}
 .metric-value {{
-    color: #F8FFFB;
+    color: #064e3b;
     font-size: 1.8rem;
     font-weight: 700;
     line-height: 1.15;
@@ -100,10 +100,10 @@ p, li, label, .stMarkdown, .stCaption {{ color: {TEXT}; }}
 /* ── Glass card ──────────────────────────────────────────── */
 .glass-card {{
     background: {CARD};
-    border: 1px solid rgba(124,255,178,0.10);
+    border: 1px solid rgba(5,150,105,0.14);
     border-radius: 18px;
     padding: 1rem 1.1rem;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.16);
+    box-shadow: 0 4px 20px rgba(5,150,105,0.08);
     margin-bottom: 0.5rem;
 }}
 
@@ -113,30 +113,31 @@ p, li, label, .stMarkdown, .stCaption {{ color: {TEXT}; }}
     margin: 0.2rem 0.35rem 0.2rem 0;
     padding: 0.34rem 0.7rem;
     border-radius: 999px;
-    background: rgba(148,163,184,0.16);
-    border: 1px solid rgba(148,163,184,0.20);
-    color: #E2E8F0;
+    background: rgba(5,150,105,0.10);
+    border: 1px solid rgba(5,150,105,0.18);
+    color: #065f46;
     font-size: 0.82rem;
 }}
 
 /* ── Alert severity badges ───────────────────────────────── */
-.badge-critical {{ background:#7f1d1d; color:#fca5a5; border-radius:8px; padding:2px 10px; font-size:0.82rem; }}
-.badge-high     {{ background:#7c2d12; color:#fdba74; border-radius:8px; padding:2px 10px; font-size:0.82rem; }}
-.badge-medium   {{ background:#713f12; color:#fde68a; border-radius:8px; padding:2px 10px; font-size:0.82rem; }}
-.badge-low      {{ background:#14532d; color:#86efac; border-radius:8px; padding:2px 10px; font-size:0.82rem; }}
+.badge-critical {{ background:#fee2e2; color:#991b1b; border-radius:8px; padding:2px 10px; font-size:0.82rem; border:1px solid #fca5a5; }}
+.badge-high     {{ background:#ffedd5; color:#9a3412; border-radius:8px; padding:2px 10px; font-size:0.82rem; border:1px solid #fdba74; }}
+.badge-medium   {{ background:#fef9c3; color:#854d0e; border-radius:8px; padding:2px 10px; font-size:0.82rem; border:1px solid #fde047; }}
+.badge-low      {{ background:#dcfce7; color:#166534; border-radius:8px; padding:2px 10px; font-size:0.82rem; border:1px solid #86efac; }}
 
 /* ── Tabs ────────────────────────────────────────────────── */
 div[data-baseweb="tab-list"]           {{ gap: 0.4rem; }}
 button[data-baseweb="tab"] {{
-    background: rgba(15,23,42,0.72) !important;
+    background: rgba(255,255,255,0.80) !important;
     border-radius: 12px !important;
-    border: 1px solid rgba(124,255,178,0.10) !important;
-    color: #EAFBF3 !important;
+    border: 1px solid rgba(5,150,105,0.14) !important;
+    color: #064e3b !important;
 }}
 button[data-baseweb="tab"][aria-selected="true"] {{
     background: linear-gradient(90deg,
-        rgba(16,185,129,0.18), rgba(59,130,246,0.18)) !important;
-    border-color: rgba(124,255,178,0.22) !important;
+        rgba(16,185,129,0.20), rgba(59,130,246,0.12)) !important;
+    border-color: rgba(5,150,105,0.30) !important;
+    font-weight: 600 !important;
 }}
 
 /* ── Widgets ─────────────────────────────────────────────── */
@@ -146,7 +147,7 @@ button[data-baseweb="tab"][aria-selected="true"] {{
 }}
 .stAlert    {{ border-radius: 14px; }}
 .stButton > button {{
-    background: linear-gradient(135deg, #10b981, #0d9488);
+    background: linear-gradient(135deg, #059669, #0d9488);
     color: white;
     border: none;
     border-radius: 10px;
@@ -154,6 +155,17 @@ button[data-baseweb="tab"][aria-selected="true"] {{
     transition: opacity 0.2s;
 }}
 .stButton > button:hover {{ opacity: 0.88; }}
+
+/* ── Input fields ────────────────────────────────────────── */
+.stSelectbox > div, .stMultiSelect > div {{
+    background: white !important;
+    border-color: rgba(5,150,105,0.25) !important;
+}}
+.stTextInput > div > input {{
+    background: white !important;
+    color: #1a2e1a !important;
+    border-color: rgba(5,150,105,0.25) !important;
+}}
 </style>
 """
 

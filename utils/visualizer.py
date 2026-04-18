@@ -31,12 +31,32 @@ sns.set_theme(style="whitegrid")
 
 def glass_layout(fig: go.Figure, title: str | None = None) -> go.Figure:
     fig.update_layout(
-        title      = title,
-        paper_bgcolor = "rgba(0,0,0,0)",
-        plot_bgcolor  = "rgba(15,23,42,0.55)",
-        font_color    = "#E5F7EE",
-        legend_font_color = "#E5F7EE",
+        title             = title,
+        title_font_color  = "#064e3b",
+        paper_bgcolor     = "rgba(0,0,0,0)",
+        plot_bgcolor      = "rgba(240,253,244,0.50)",
+        font_color        = "#1a2e1a",
+        legend_font_color = "#1a2e1a",
+        legend            = dict(
+            bgcolor       = "rgba(255,255,255,0.85)",
+            bordercolor   = "rgba(5,150,105,0.20)",
+            borderwidth   = 1,
+        ),
         margin = dict(l=30, r=20, t=55, b=30),
+    )
+    fig.update_xaxes(
+        gridcolor     = "rgba(5,150,105,0.15)",
+        linecolor     = "rgba(5,150,105,0.25)",
+        tickfont      = dict(color="#374151"),
+        title_font    = dict(color="#374151"),
+        zerolinecolor = "rgba(5,150,105,0.15)",
+    )
+    fig.update_yaxes(
+        gridcolor     = "rgba(5,150,105,0.15)",
+        linecolor     = "rgba(5,150,105,0.25)",
+        tickfont      = dict(color="#374151"),
+        title_font    = dict(color="#374151"),
+        zerolinecolor = "rgba(5,150,105,0.15)",
     )
     return fig
 
@@ -114,22 +134,22 @@ def plot_confusion_matrix_bytes(y_true, y_pred) -> bytes:
     cm     = confusion_matrix(y_true, y_pred, labels=list(range(5)))
 
     fig, ax = plt.subplots(figsize=(7, 6))
-    fig.patch.set_facecolor("#08131f")
-    ax.set_facecolor("#08131f")
+    fig.patch.set_facecolor("#f0fdf4")
+    ax.set_facecolor("#f0fdf4")
     sns.heatmap(
         cm,
         annot       = True,
         fmt         = "d",
-        cmap        = "mako",
+        cmap        = "YlGn",
         xticklabels = labels,
         yticklabels = labels,
         linewidths  = 0.5,
         ax          = ax,
     )
-    ax.set_xlabel("Predicted",  color="#E5F7EE", fontsize=11)
-    ax.set_ylabel("Actual",     color="#E5F7EE", fontsize=11)
-    ax.set_title("Confusion Matrix", color="#F8FFFB", pad=12, fontsize=13)
-    ax.tick_params(colors="#D1FAE5")
+    ax.set_xlabel("Predicted",  color="#1a2e1a", fontsize=11)
+    ax.set_ylabel("Actual",     color="#1a2e1a", fontsize=11)
+    ax.set_title("Confusion Matrix", color="#064e3b", pad=12, fontsize=13)
+    ax.tick_params(colors="#374151")
     plt.tight_layout()
 
     buf = BytesIO()
@@ -153,7 +173,7 @@ def plot_feature_importance(
         x           = importances[idx][::-1],
         y           = [feature_names[i] for i in idx][::-1],
         orientation = "h",
-        marker_color= "#55D6BE",
+        marker_color= "#059669",
         hovertemplate="<b>%{y}</b><br>Importance: %{x:.4f}<extra></extra>",
     ))
     fig.update_xaxes(title="Feature Importance Score")
@@ -184,8 +204,8 @@ def plot_zone_radar(zone_row: pd.Series, feature_names: list[str]) -> go.Figure:
         polar=dict(radialaxis=dict(
             visible  = True,
             range    = [0, 1],
-            gridcolor= "rgba(255,255,255,0.12)",
-            color    = "#A7F3D0",
+            gridcolor= "rgba(5,150,105,0.20)",
+            color    = "#374151",
         )),
     )
     return glass_layout(fig, f"Feature Radar — {zone_row.get('zone_name', '')}")
@@ -225,7 +245,7 @@ def build_network_figure(
     edge_trace = go.Scatter(
         x=edge_x, y=edge_y,
         mode="lines",
-        line=dict(color="rgba(203,213,225,0.35)", width=1),
+        line=dict(color="rgba(5,150,105,0.30)", width=1),
         hoverinfo="none",
     )
 
@@ -246,7 +266,7 @@ def build_network_figure(
             for i in g.nodes()
         ],
         hoverinfo = "text",
-        textfont  = dict(color="#E5F7EE", size=9),
+        textfont  = dict(color="#1a2e1a", size=9),
     )
 
     fig = go.Figure([edge_trace, node_trace])

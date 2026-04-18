@@ -68,12 +68,12 @@ risk_emoji= RISK_EMOJIS.get(pred_cls, "❓")
 with col_info:
     st.markdown(
         f"""
-        <div style="background:rgba(15,23,42,0.80);border:1px solid {risk_color};
+        <div style="background:rgba(255,255,255,0.92);border:1px solid {risk_color};
                     border-radius:14px;padding:0.85rem 1.1rem;margin-top:0.5rem;">
             <span style="font-size:1.4rem;">{risk_emoji}</span>
             <b style="color:{risk_color};font-size:1.1rem;"> {risk_name}</b>
-            &nbsp;|&nbsp; <span style="color:#A7F3D0;">Confidence: {conf:.1f}%</span>
-            <br><small style="color:#CBD5E1;">Zone: {zone}</small>
+            &nbsp;|&nbsp; <span style="color:#374151;">Confidence: {conf:.1f}%</span>
+            <br><small style="color:#6B7280;">Zone: {zone}</small>
         </div>
         """,
         unsafe_allow_html=True,

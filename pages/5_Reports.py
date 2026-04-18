@@ -134,7 +134,7 @@ with t2:
             pct     = correct / total * 100
             color   = "#34D399" if pct >= 80 else "#F59E0B" if pct >= 60 else "#F87171"
             st.markdown(
-                f'<div style="background:rgba(15,23,42,0.8);border-left:3px solid {color};'
+                f'<div style="background:rgba(255,255,255,0.92);border-left:3px solid {color};'
                 f'border-radius:8px;padding:4px 10px;margin:3px 0;">'
                 f'<b style="color:{color};">{LABEL_EMOJIS.get(cls,"?")} {LABEL_NAMES.get(cls,"?")}</b> '
                 f'— {pct:.0f}% ({correct}/{total})</div>',
@@ -210,8 +210,8 @@ with t4:
             )
             fig_box.update_layout(
                 paper_bgcolor="rgba(0,0,0,0)",
-                plot_bgcolor ="rgba(15,23,42,0.55)",
-                font_color   ="#E5F7EE",
+                plot_bgcolor ="rgba(255,255,255,0.92)",
+                font_color   ="#1a2e1a",
             )
             st.plotly_chart(fig_box, use_container_width=True)
 

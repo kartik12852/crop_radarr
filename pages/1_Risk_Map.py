@@ -132,30 +132,30 @@ fig = px.scatter_geo(
 
 fig.update_traces(
     marker=dict(size=marker_sz, line=dict(width=1.5, color="#F8FAFC")),
-    textfont=dict(color="#E5F7EE", size=8),
+    textfont=dict(color="#1a2e1a", size=8),
 )
 fig.update_geos(
     visible        = False,
     showcountries  = True,
     showsubunits   = True,
-    countrycolor   = "rgba(255,255,255,0.28)",
-    subunitcolor   = "rgba(255,255,255,0.12)",
+    countrycolor   = "rgba(5,150,105,0.40)",
+    subunitcolor   = "rgba(5,150,105,0.20)",
     lataxis_range  = [6, 38],
     lonaxis_range  = [67, 98],
     bgcolor        = "rgba(0,0,0,0)",
-    landcolor      = "rgba(17,34,17,0.60)",
-    oceancolor     = "rgba(7,18,35,0.80)",
+    landcolor      = "rgba(220,252,231,0.90)",
+    oceancolor     = "rgba(186,230,253,0.70)",
     showocean      = True,
     showland       = True,
     showrivers     = True,
-    rivercolor     = "rgba(56,189,248,0.4)",
+    rivercolor     = "rgba(14,165,233,0.60)",
 )
 fig.update_layout(
     paper_bgcolor     = "rgba(0,0,0,0)",
     plot_bgcolor      = "rgba(0,0,0,0)",
-    font_color        = "#E5F7EE",
+    font_color        = "#1a2e1a",
     legend_title_text = "Predicted Risk",
-    legend            = dict(bgcolor="rgba(15,23,42,0.8)", bordercolor="rgba(124,255,178,0.2)"),
+    legend            = dict(bgcolor="rgba(255,255,255,0.92)", bordercolor="rgba(5,150,105,0.25)"),
     height            = 560,
     margin            = dict(l=0, r=0, t=40, b=0),
 )
@@ -199,10 +199,10 @@ with tab_cards:
             color = COLOR_MAP.get(zone_row["risk_name"], "#94A3B8")
             with col:
                 st.markdown(
-                    f'<div style="background:rgba(15,23,42,0.85);border:1px solid {color};'
+                    f'<div style="background:rgba(255,255,255,0.92);border:1px solid {color};'
                     f'border-radius:14px;padding:0.8rem;margin-bottom:0.5rem;">'
                     f'<b style="color:{color};">{zone_row["emoji"]} {zone_row["zone_name"]}</b><br>'
-                    f'<small style="color:#A7F3D0;">🌾 {zone_row["crop"]}</small><br>'
+                    f'<small style="color:#374151;">🌾 {zone_row["crop"]}</small><br>'
                     f'<b style="color:{color};">{zone_row["risk_name"]}</b> '
                     f'<small style="color:#CBD5E1;">({zone_row["confidence_pct"]:.1f}%)</small><br>'
                     f'<small style="color:#64748B;">📍 {zone_row["lat"]:.1f}°N {zone_row["lon"]:.1f}°E</small>'
@@ -222,7 +222,7 @@ with tab_risk:
         for _, rz in risk_zones.iterrows():
             color = COLOR_MAP.get(rz["risk_name"], "#94A3B8")
             st.markdown(
-                f'<div style="background:rgba(15,23,42,0.8);border-left:4px solid {color};'
+                f'<div style="background:rgba(255,255,255,0.92);border-left:4px solid {color};'
                 f'border-radius:10px;padding:0.6rem 1rem;margin:4px 0;">'
                 f'<b style="color:{color};">{rz["emoji"]} {rz["zone_name"]}</b> '
                 f'· {rz["crop"]} '

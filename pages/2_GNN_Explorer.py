@@ -57,7 +57,7 @@ with t2:
         color_discrete_map={LABEL_NAMES[k]: v for k, v in LABEL_COLORS.items()},
     )
     fig.update_traces(marker=dict(size=13, line=dict(width=1, color="#F8FAFC")))
-    fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(15,23,42,0.55)", font_color="#E5F7EE")
+    fig.update_layout(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(255,255,255,0.92)", font_color="#1a2e1a")
     st.plotly_chart(fig, use_container_width=True)
 
 with t3:
