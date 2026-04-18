@@ -145,3 +145,55 @@ risk_label
 2026-04-18 12:48:20,420 [AutoUpdater] INFO Model retrained successfully
 2026-04-18 12:48:20,537 [AutoUpdater] INFO Model retrained successfully
 2026-04-18 12:48:38,837 [AutoUpdater] INFO AutoUpdater started — interval 2.0h, immediate=False
+2026-04-18 12:53:16,521 [AutoUpdater] INFO Starting data fetch pipeline
+2026-04-18 12:54:23,610 [AutoUpdater] INFO Weather saved → D:\crop.radar\crop_radarr\data\raw\weather_data.csv
+2026-04-18 12:54:23,623 [AutoUpdater] INFO Reusing cached soil data
+2026-04-18 12:54:23,705 [AutoUpdater] INFO Merged data saved → D:\crop.radar\crop_radarr\data\processed\merged_zones.csv | 30 zones
+2026-04-18 12:54:23,705 [AutoUpdater] INFO Risk distribution:
+risk_label
+1    14
+0    10
+3     5
+4     1
+2026-04-18 12:54:31,855 [AutoUpdater] ERROR Model retraining failed: Can't pickle <class 'src.gnn_model.GraphRiskModel'>: it's not the same object as src.gnn_model.GraphRiskModel
+Traceback (most recent call last):
+  File "D:\crop.radar\crop_radarr\src\auto_updater.py", line 343, in run_pipeline
+    trainer.train(X, adj_norm, y, feat_cols)
+  File "D:\crop.radar\crop_radarr\src\trainer.py", line 227, in train
+    joblib.dump(self.model, MODEL_PATH)
+  File "d:\crop.radar\crop_radarr\.venv\Lib\site-packages\joblib\numpy_pickle.py", line 600, in dump
+    NumpyPickler(f, protocol=protocol).dump(value)
+  File "C:\Users\Kartik\AppData\Local\Programs\Python\Python311\Lib\pickle.py", line 487, in dump
+    self.save(obj)
+  File "d:\crop.radar\crop_radarr\.venv\Lib\site-packages\joblib\numpy_pickle.py", line 395, in save
+    return Pickler.save(self, obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Kartik\AppData\Local\Programs\Python\Python311\Lib\pickle.py", line 603, in save
+    self.save_reduce(obj=obj, *rv)
+  File "C:\Users\Kartik\AppData\Local\Programs\Python\Python311\Lib\pickle.py", line 687, in save_reduce
+    save(cls)
+  File "d:\crop.radar\crop_radarr\.venv\Lib\site-packages\joblib\numpy_pickle.py", line 395, in save
+    return Pickler.save(self, obj)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Kartik\AppData\Local\Programs\Python\Python311\Lib\pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+    ^^^^^^^^^^^^
+  File "C:\Users\Kartik\AppData\Local\Programs\Python\Python311\Lib\pickle.py", line 1129, in save_type
+    return self.save_global(obj)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Kartik\AppData\Local\Programs\Python\Python311\Lib\pickle.py", line 1076, in save_global
+    raise PicklingError(
+_pickle.PicklingError: Can't pickle <class 'src.gnn_model.GraphRiskModel'>: it's not the same object as src.gnn_model.GraphRiskModel
+
+2026-04-18 13:05:25,078 [AutoUpdater] INFO AutoUpdater started — interval 2.0h, immediate=False
+2026-04-18 13:10:14,733 [AutoUpdater] INFO Starting data fetch pipeline
+2026-04-18 13:11:21,515 [AutoUpdater] INFO Weather saved → D:\crop.radar\crop_radarr\data\raw\weather_data.csv
+2026-04-18 13:11:21,515 [AutoUpdater] INFO Reusing cached soil data
+2026-04-18 13:11:21,672 [AutoUpdater] INFO Merged data saved → D:\crop.radar\crop_radarr\data\processed\merged_zones.csv | 30 zones
+2026-04-18 13:11:21,680 [AutoUpdater] INFO Risk distribution:
+risk_label
+1    14
+0    10
+3     5
+4     1
+2026-04-18 13:11:37,379 [AutoUpdater] INFO Model retrained successfully

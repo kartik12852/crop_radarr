@@ -121,7 +121,7 @@ with c_left:
                     st.info("📊 Built-in feature-impact approximation used (install shap for exact SHAP values)")
 
                 img = plot_shap_bar(result, top_n=14)
-                st.image(img, caption=f"Feature impact — {zone}", use_column_width=True)
+                st.image(img, caption=f"Feature impact — {zone}", use_container_width=True)
 
                 sv       = result["shap_values"][pred_cls]
                 shap_df  = pd.DataFrame({
@@ -170,7 +170,7 @@ with c_right:
                 from src.xai_explainer import plot_global_shap
                 img = plot_global_shap(model, X, adj_norm, fc, top_n=14)
                 method_label = "SHAP" if SHAP_OK else "RF Importance"
-                st.image(img, caption=f"Global {method_label} importance", use_column_width=True)
+                st.image(img, caption=f"Global {method_label} importance", use_container_width=True)
             except Exception as e:
                 st.error(f"❌ Global importance failed: {e}")
 
