@@ -1,1 +1,112 @@
 2026-04-17 18:55:22,829 [AutoUpdater] INFO AutoUpdater started — interval 2.0h, immediate=False
+2026-04-17 19:37:40,776 [AutoUpdater] INFO AutoUpdater started — interval 2.0h, immediate=False
+2026-04-17 19:41:25,709 [AutoUpdater] INFO AutoUpdater started — interval 2.0h, immediate=False
+2026-04-17 19:42:16,802 [AutoUpdater] INFO Starting data fetch pipeline
+2026-04-17 19:42:53,297 [AutoUpdater] WARNING Weather fetch failed (13.3,75.7): ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-17 19:43:20,521 [AutoUpdater] WARNING Weather fetch failed (23.6,85.5): ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-17 19:44:04,660 [AutoUpdater] WARNING Weather fetch failed (31.5,74.3): ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-17 19:44:04,924 [AutoUpdater] INFO Weather saved → D:\crop.radar\crop_radarr\data\raw\weather_data.csv
+2026-04-17 19:44:04,930 [AutoUpdater] INFO Reusing cached soil data
+2026-04-17 19:44:04,988 [AutoUpdater] INFO Merged data saved → D:\crop.radar\crop_radarr\data\processed\merged_zones.csv | 30 zones
+2026-04-17 19:44:04,991 [AutoUpdater] INFO Risk distribution:
+risk_label
+1    12
+0    10
+3     5
+2     2
+4     1
+2026-04-17 19:44:05,028 [AutoUpdater] ERROR Model retraining failed: The least populated class in y has only 1 member, which is too few. The minimum number of groups for any class cannot be less than 2.
+Traceback (most recent call last):
+  File "D:\crop.radar\crop_radarr\src\auto_updater.py", line 343, in run_pipeline
+    trainer.train(X, adj_norm, y, feat_cols)
+  File "D:\crop.radar\crop_radarr\src\trainer.py", line 58, in train
+    idx_train, idx_val = train_test_split(
+                         ^^^^^^^^^^^^^^^^^
+  File "d:\crop.radar\crop_radarr\.venv\Lib\site-packages\sklearn\utils\_param_validation.py", line 213, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "d:\crop.radar\crop_radarr\.venv\Lib\site-packages\sklearn\model_selection\_split.py", line 2806, in train_test_split
+    train, test = next(cv.split(X=arrays[0], y=stratify))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\crop.radar\crop_radarr\.venv\Lib\site-packages\sklearn\model_selection\_split.py", line 1843, in split
+    for train, test in self._iter_indices(X, y, groups):
+  File "d:\crop.radar\crop_radarr\.venv\Lib\site-packages\sklearn\model_selection\_split.py", line 2252, in _iter_indices
+    raise ValueError(
+ValueError: The least populated class in y has only 1 member, which is too few. The minimum number of groups for any class cannot be less than 2.
+
+2026-04-17 23:45:39,153 [AutoUpdater] INFO Starting data fetch pipeline
+2026-04-17 23:46:26,035 [AutoUpdater] WARNING Weather fetch failed (25.5,91.4): ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-17 23:46:52,910 [AutoUpdater] WARNING Weather fetch failed (15.3,74.1): ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-17 23:47:00,452 [AutoUpdater] INFO Weather saved → D:\crop.radar\crop_radarr\data\raw\weather_data.csv
+2026-04-17 23:47:00,460 [AutoUpdater] INFO Reusing cached soil data
+2026-04-17 23:47:00,515 [AutoUpdater] INFO Merged data saved → D:\crop.radar\crop_radarr\data\processed\merged_zones.csv | 30 zones
+2026-04-17 23:47:00,520 [AutoUpdater] INFO Risk distribution:
+risk_label
+1    13
+0    11
+3     4
+4     1
+2     1
+2026-04-17 23:47:03,251 [AutoUpdater] ERROR Model retraining failed: The least populated class in y has only 1 member, which is too few. The minimum number of groups for any class cannot be less than 2.
+Traceback (most recent call last):
+  File "D:\crop.radar\crop_radarr\src\auto_updater.py", line 343, in run_pipeline
+    trainer.train(X, adj_norm, y, feat_cols)
+  File "D:\crop.radar\crop_radarr\src\trainer.py", line 116, in train
+    idx_sp_train, idx_val = train_test_split(
+                            ^^^^^^^^^^^^^^^^^
+  File "D:\crop.radar\crop_radarr\.venv\Lib\site-packages\sklearn\utils\_param_validation.py", line 213, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\crop.radar\crop_radarr\.venv\Lib\site-packages\sklearn\model_selection\_split.py", line 2806, in train_test_split
+    train, test = next(cv.split(X=arrays[0], y=stratify))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\crop.radar\crop_radarr\.venv\Lib\site-packages\sklearn\model_selection\_split.py", line 1843, in split
+    for train, test in self._iter_indices(X, y, groups):
+  File "D:\crop.radar\crop_radarr\.venv\Lib\site-packages\sklearn\model_selection\_split.py", line 2252, in _iter_indices
+    raise ValueError(
+ValueError: The least populated class in y has only 1 member, which is too few. The minimum number of groups for any class cannot be less than 2.
+
+2026-04-17 23:51:25,413 [AutoUpdater] INFO AutoUpdater started — interval 2.0h, immediate=False
+2026-04-17 23:56:12,012 [AutoUpdater] INFO Starting data fetch pipeline
+2026-04-17 23:57:21,234 [AutoUpdater] WARNING Weather fetch failed (21.3,81.6): ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-17 23:57:42,544 [AutoUpdater] WARNING Weather fetch failed (23.6,85.5): HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Max retries exceeded with url: /v1/archive?latitude=23.6&longitude=85.5&start_date=2026-03-18&end_date=2026-04-16&daily=temperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_sum%2Cwindspeed_10m_max%2Cet0_fao_evapotranspiration&hourly=soil_moisture_0_to_7cm&timezone=Asia%2FKolkata (Caused by ConnectTimeoutError(<HTTPSConnection(host='archive-api.open-meteo.com', port=443) at 0x18b9f151750>, 'Connection to archive-api.open-meteo.com timed out. (connect timeout=30)'))
+2026-04-17 23:58:31,745 [AutoUpdater] WARNING Weather fetch failed (15.3,74.1): ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+2026-04-17 23:58:48,493 [AutoUpdater] INFO Weather saved → D:\crop.radar\crop_radarr\data\raw\weather_data.csv
+2026-04-17 23:58:48,520 [AutoUpdater] INFO Reusing cached soil data
+2026-04-17 23:58:48,596 [AutoUpdater] INFO Merged data saved → D:\crop.radar\crop_radarr\data\processed\merged_zones.csv | 30 zones
+2026-04-17 23:58:48,598 [AutoUpdater] INFO Risk distribution:
+risk_label
+0    12
+1    11
+3     5
+4     2
+2026-04-17 23:58:55,533 [AutoUpdater] INFO Model retrained successfully
+2026-04-18 12:37:16,751 [AutoUpdater] INFO Starting data fetch pipeline
+2026-04-18 12:38:00,542 [AutoUpdater] INFO Weather saved → D:\crop.radar\crop_radarr\data\raw\weather_data.csv
+2026-04-18 12:38:00,542 [AutoUpdater] INFO Reusing cached soil data
+2026-04-18 12:38:00,609 [AutoUpdater] INFO Merged data saved → D:\crop.radar\crop_radarr\data\processed\merged_zones.csv | 30 zones
+2026-04-18 12:38:00,609 [AutoUpdater] INFO Risk distribution:
+risk_label
+1    14
+0    10
+3     5
+4     1
+2026-04-18 12:38:03,655 [AutoUpdater] ERROR Model retraining failed: The least populated class in y has only 1 member, which is too few. The minimum number of groups for any class cannot be less than 2.
+Traceback (most recent call last):
+  File "D:\crop.radar\crop_radarr\src\auto_updater.py", line 343, in run_pipeline
+    trainer.train(X, adj_norm, y, feat_cols)
+  File "D:\crop.radar\crop_radarr\src\trainer.py", line 116, in train
+    idx_sp_train, idx_val = train_test_split(
+                            ^^^^^^^^^^^^^^^^^
+  File "D:\crop.radar\crop_radarr\.venv\Lib\site-packages\sklearn\utils\_param_validation.py", line 213, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\crop.radar\crop_radarr\.venv\Lib\site-packages\sklearn\model_selection\_split.py", line 2806, in train_test_split
+    train, test = next(cv.split(X=arrays[0], y=stratify))
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\crop.radar\crop_radarr\.venv\Lib\site-packages\sklearn\model_selection\_split.py", line 1843, in split
+    for train, test in self._iter_indices(X, y, groups):
+  File "D:\crop.radar\crop_radarr\.venv\Lib\site-packages\sklearn\model_selection\_split.py", line 2252, in _iter_indices
+    raise ValueError(
+ValueError: The least populated class in y has only 1 member, which is too few. The minimum number of groups for any class cannot be less than 2.
+
